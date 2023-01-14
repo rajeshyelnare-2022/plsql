@@ -1,0 +1,38 @@
+DECLARE 
+str varchar2(100) := 'ABC,DEG,HTG,LMI';
+BEGIN 
+   for i in (select trim(regexp_substr(str,'[^,]+',1,LEVEL)) myl from dual
+              connect by level <= regexp_count(str,',')+1
+   )
+   loop 
+      dbms_output.put_line(i.myl);
+
+    end loop;
+
+END;
+
+select regexp_count('ABC,DEG,HTG,LMI',',') from dual 
+
+select regexp_substr('ABC,DEG,HTG,LMI','[^,]+',1,4) from dual;
+
+
+DECLARE 
+str varchar2(100) := 'ABC,DEG,HTG,LMI';
+BEGIN 
+   for i in  1 ..REGEXP_COUNT(str,',')
+   loop 
+      dbms_output.put_line(regexp_substr(str,'[^,]+',1,i));
+	 
+
+    end loop;
+
+END;
+
+declare
+    type client_oids is table of VARCHAR2(255) NOT NULL;
+    clientList client_oids := client_oids('xxx','aaa','bbb','ccc','aaa','bbb','ccc','aaa','bbb','ccc','aaa','bbb','ccc');
+begin
+    for i in clientList.first..clientList.last loop
+        dbms_output.put_line( clientList(i) );
+    end loop;
+end;
